@@ -1,0 +1,86 @@
+// For those who want the bleeding edge
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+    }
+}
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.70'
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+//apply plugin: 'kotlin'
+
+dependencies {
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.70")
+}
+
+version = "1.0"
+group= "me.doclic.TEMflHoS" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "TemflHoS"
+
+sourceCompatibility = targetCompatibility = 1.8
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+
+sourceSets {
+    main {
+        output.resourcesDir = java.outputDir
+    }
+}
+
+
+minecraft {
+    version = "1.8.9-11.15.1.2318-1.8.9"
+    runDir = "run"
+
+    mappings = "stable_22"
+}
+
+
+jar {
+    // used for the shitty installer thingy, don't care
+    // (when i say shitty, i mean for ux, but doing that with the default jvm stuff is pretty impressive ngl)
+//    manifest.attributes(
+//            'Main-Class': 'DungeonRoomsInstallerFrame'
+//    )
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+//shadowJar {
+//    dependencies {
+//        include(dependency('org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.70'))
+//        include(dependency('org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.70'))
+//    }
+//    configurations = [project.configurations.compile]
+//    relocate "kotlin", "myapp.kotlin"
+//}
