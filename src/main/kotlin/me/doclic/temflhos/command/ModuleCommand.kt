@@ -6,67 +6,80 @@ import me.doclic.temflhos.util.tChat
 import net.minecraft.command.CommandBase
 import net.minecraft.command.ICommandSender
 
-class ModuleCommand : CommandBase() {
-    override fun getCommandName(): String = "module"
-    override fun canCommandSenderUseCommand(sender: ICommandSender?): Boolean = true
-    override fun getCommandUsage(sender: ICommandSender?): String = "$commandName <${actions.joinToString(" | ")} | {module name} (runs toggle)> [...]"
-    private fun toggleModule (module :Module) {
-        module.enabled = !module.enabled
-        tChat("${if(module.enabled) "Enabled" else "Disabled"} module ${module.name}")
-    }
-    private val actions = listOf("toggle", "enable", "disable", "state", "list")
-    private fun isValidAction(argument: String) = actions.contains(argument)
-    private fun handleModulelessCommand (action: String) {
-        when (action) {
-            "list" -> listModules()
+object ModuleCommand : CommandBase() {
+    private val actions = HashMap<String, Action>()
+    private enum class Action(val needsModule: Boolean, vararg val names: String) {
+        TOGGLE(true, "toggle"),
+        ENABLE(true, "enable", "en", "on"),
+        DISABLE(true, "disable", "dis", "off"),
+        STATE(true, "state"),
+        LIST(false, "list");
+
+        init {
+            if(names.isEmpty()) throw IllegalArgumentException("Action requires at least 1 name")
+
+            names.forEach { name -> actions[name.lowercase()] = this }
         }
     }
-    private fun listModules() {
-        tChat(ModuleManager.moduleNames.toString())
+    override fun getCommandName(): String = "module"
+    override fun canCommandSenderUseCommand(sender: ICommandSender?): Boolean = true
+    override fun getCommandUsage(sender: ICommandSender?): String {
+        val moduleActionNames = HashSet<String>()
+        val noModuleActionNames = HashSet<String>()
+        Action.values().forEach {
+            action -> run {
+                if (action.needsModule) moduleActionNames.add(action.names[0])
+                else noModuleActionNames.add(action.names[0])
+            }
+        }
+
+        return "$commandName <${moduleActionNames.joinToString(" | ")}> <module> OR " +
+                "/$commandName <${noModuleActionNames.joinToString(" |")}> OR " +
+                "/$commandName <module>"
     }
     override fun processCommand(sender: ICommandSender, args: Array<out String>) {
-        if(args.isEmpty()) {
+        if (args.isEmpty()) {
             tChat("Usage: /${getCommandUsage(sender)}")
             return
         }
-        val action = args[0].lowercase()
-        val module : Module? = ModuleManager.getModule(if (isValidAction(action) && args.size > 1) args[1] else args[0])
-        if(module == null) {
-            if (isValidAction(action)) {
-                handleModulelessCommand(action)
-                return
-            }
-            tChat("Unknown module ${if (args.size == 1) args[0] else args[1]}")
+
+        val action: Action?
+        val module: Module?
+        if (args.size == 1) {
+            module = ModuleManager.getModule(args[0])
+            action = if (module != null) Action.TOGGLE
+                     else actions[args[0].lowercase()]
+        } else {
+            action = actions[args[0].lowercase()]
+            module = ModuleManager.getModule(args[1])
+        }
+
+        if(action == null) {
+            tChat("Unknown action: ${args[0]}")
+            tChat("Usage: /${getCommandUsage(sender)}")
             return
         }
-        when (action) {
-            "toggle" -> {
-                toggleModule(module)
-            }
-            "enable" -> {
-                if(module.enabled) tChat("Module ${module.name} is already enabled")
-                else {
-                    module.enabled = true
-                    tChat("Enabled module ${module.name}")
-                }
-            }
-            "disable" -> {
-                if(!module.enabled) tChat("Module ${module.name} is already disabled")
-                else {
-                    module.enabled = false
-                    tChat("Disabled module ${module.name}")
-                }
-            }
-            "state" -> {
-                tChat("Module ${module.name} is ${if(module.enabled) "enabled" else "disabled"}")
-            }
-            "list" -> {
-                listModules()
-            }
-            else -> {
-                //action treated as module name
-                toggleModule(module)
-            }
+        if(action.needsModule && module == null) {
+            tChat("Action ${action.names[0]} requires a module as a parameter")
+            return
         }
+
+        when (action) {
+            Action.TOGGLE -> { module!!; setState(module, !module.enabled) }
+            Action.ENABLE -> { module!!; setState(module, true) }
+            Action.DISABLE -> { module!!; setState(module, false) }
+            Action.STATE -> { module!!; tChat("Module ${module.name} is ${if(module.enabled) "enabled" else "disabled"}") }
+            Action.LIST -> tChat("Modules: ${ModuleManager.moduleNames}")
+        }
+    }
+
+    private fun setState(module: Module, state: Boolean) {
+        if(module.enabled == state) {
+            tChat("Module ${module.name} is already ${if (state) "enabled" else "disabled"}")
+            return
+        }
+
+        module.enabled = state
+        tChat("${if (state) "Enabled" else "Disabled"} module ${module.name}")
     }
 }
