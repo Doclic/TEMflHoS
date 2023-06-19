@@ -22,7 +22,7 @@ class ModuleCommand : CommandBase() {
         }
     }
     private fun listModules() {
-        tChat(ModuleManager.modules.keys.toString())
+        tChat(ModuleManager.moduleNames.toString())
     }
     override fun processCommand(sender: ICommandSender, args: Array<out String>) {
         if(args.isEmpty()) {

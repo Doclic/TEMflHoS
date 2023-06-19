@@ -13,6 +13,8 @@ object ModuleManager : Listener {
     fun hasModule(module: Module): Boolean = hasModule(module.id)
     fun hasModule(id: String): Boolean = modules.containsKey(id)
     fun getModule(id: String): Module? = modules[id]
+    val moduleNames: Set<String>
+        get() = modules.keys
 
     override fun onPlayerQuit() {
         for (module in modules.values)
