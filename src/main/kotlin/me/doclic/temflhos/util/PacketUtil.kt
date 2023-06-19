@@ -11,5 +11,5 @@ object PacketUtil {
 }
 
 typealias GenericPacket = Packet<*>
-typealias C2SPacket = Packet<INetHandlerPlayServer>
-typealias S2CPacket = Packet<INetHandlerPlayClient>
+typealias C2SPacket = Packet<in INetHandlerPlayServer>
+typealias S2CPacket = Packet<in INetHandlerPlayClient>
