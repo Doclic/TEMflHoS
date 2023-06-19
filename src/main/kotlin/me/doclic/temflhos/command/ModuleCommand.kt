@@ -9,11 +9,11 @@ import net.minecraft.command.ICommandSender
 object ModuleCommand : CommandBase() {
     private val actions = HashMap<String, Action>()
     private enum class Action(val needsModule: Boolean, vararg val names: String) {
-        TOGGLE(true, "toggle"),
-        ENABLE(true, "enable", "en", "on"),
-        DISABLE(true, "disable", "dis", "off"),
-        STATE(true, "state"),
-        LIST(false, "list");
+        TOGGLE(true, "toggle", "t"),
+        ENABLE(true, "enable", "en", "on", "e"),
+        DISABLE(true, "disable", "dis", "off", "d"),
+        STATE(true, "state", "s"),
+        LIST(false, "list", "l");
 
         init {
             if(names.isEmpty()) throw IllegalArgumentException("Action requires at least 1 name")
@@ -23,20 +23,20 @@ object ModuleCommand : CommandBase() {
     }
     override fun getCommandName(): String = "module"
     override fun canCommandSenderUseCommand(sender: ICommandSender?): Boolean = true
-    override fun getCommandUsage(sender: ICommandSender?): String {
+    private val commandUsage: String = run {
         val moduleActionNames = HashSet<String>()
         val noModuleActionNames = HashSet<String>()
-        Action.values().forEach {
-            action -> run {
+        Action.values().forEach { action ->
+            run {
                 if (action.needsModule) moduleActionNames.add(action.names[0])
                 else noModuleActionNames.add(action.names[0])
             }
         }
-
-        return "$commandName <${moduleActionNames.joinToString(" | ")}> <module> OR " +
+        "$commandName <${moduleActionNames.joinToString(" | ")}> <module> OR " +
                 "/$commandName <${noModuleActionNames.joinToString(" |")}> OR " +
                 "/$commandName <module>"
     }
+    override fun getCommandUsage(sender: ICommandSender?): String = commandUsage
     override fun processCommand(sender: ICommandSender, args: Array<out String>) {
         if (args.isEmpty()) {
             tChat("Usage: /${getCommandUsage(sender)}")
