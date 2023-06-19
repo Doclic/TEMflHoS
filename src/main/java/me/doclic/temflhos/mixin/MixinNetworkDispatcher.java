@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(NetworkDispatcher.class)
-public class MixinNetworkDispatcher {
+abstract public class MixinNetworkDispatcher {
     @Shadow(remap = false) @Final public NetworkManager manager;
 
     @Inject(method = "completeClientSideConnection", at = @At("HEAD"), remap = false)
