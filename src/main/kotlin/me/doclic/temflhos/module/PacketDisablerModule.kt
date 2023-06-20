@@ -1,10 +1,7 @@
 package me.doclic.temflhos.module
 
 import me.doclic.temflhos.event.C2SPacketEvent
-import me.doclic.temflhos.util.C2SPacket
-import me.doclic.temflhos.util.PacketUtil
-import me.doclic.temflhos.util.player
-import me.doclic.temflhos.util.tChat
+import me.doclic.temflhos.util.*
 import net.minecraft.client.entity.EntityPlayerSP
 import java.util.LinkedList
 
@@ -14,13 +11,13 @@ class PacketDisablerModule : Module("packet_disabler", "Packet Disabler") {
 
 
     override fun onEnable() {
-        val player = player()
+        val player = localPlayer
         player.tChat("Stopped packet writing")
         playSound(player)
     }
 
     override fun onDisable() {
-        val player = player()
+        val player = localPlayer
         player.tChat("Re-enabled packet writing")
         playSound(player)
 
