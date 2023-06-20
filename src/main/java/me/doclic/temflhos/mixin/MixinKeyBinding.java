@@ -30,8 +30,10 @@ public abstract class MixinKeyBinding {
                 if(!Keyboard.isKeyDown(Keyboard.KEY_RMENU)) continue; // KEY_RMENU is right alt
 
                 ModuleManager.INSTANCE.getRegistry().forEach((id, module) -> {
-                    if(module.getKey().getValue() == Keyboard.getEventKey())
+                    if(module.getKey().getValue() == Keyboard.getEventKey()) {
                         module.getEnabled().setValue(!module.getEnabled().getValue());
+                        module.sendStateUpdateMsg();
+                    }
                 });
             }
             readBuffer.reset();

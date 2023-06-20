@@ -6,6 +6,8 @@ import me.doclic.temflhos.config.ConfigNode
 import me.doclic.temflhos.config.IntConfigType
 import me.doclic.temflhos.event.Listener
 import me.doclic.temflhos.event.ListenerManager
+import me.doclic.temflhos.util.localPlayer
+import me.doclic.temflhos.util.tChat
 import org.lwjgl.input.Keyboard
 
 abstract class Module(
@@ -35,4 +37,9 @@ abstract class Module(
 
     open fun onEnable() { }
     open fun onDisable() { }
+
+    open fun sendStateUpdateMsg() {
+        tChat("${if (enabled.value) "Enabled" else "Disabled"} module $name")
+        localPlayer.playSound("random.click", 1f, 1.1f)
+    }
 }

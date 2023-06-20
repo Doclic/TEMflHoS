@@ -80,6 +80,6 @@ object ModuleCommand : CommandBase() {
         }
 
         module.enabled.value = state
-        tChat("${if (state) "Enabled" else "Disabled"} module ${module.name}")
+        module.sendStateUpdateMsg()
     }
 }
