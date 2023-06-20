@@ -14,6 +14,7 @@ import me.doclic.temflhos.util.mc
 import net.minecraft.network.NetworkManager
 
 object PacketEventHandler : Listener {
+    @Suppress("UNCHECKED_CAST")
     override fun onPlayerJoin(net: NetworkManager) {
         net.channel().pipeline().addBefore(
             "packet_handler",
