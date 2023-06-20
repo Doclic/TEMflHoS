@@ -56,7 +56,7 @@ object ColorConfigType : ConfigType<Color> {
     }
 }
 
-class ArrayConfigType<T>(private val type: ConfigType<T>) : ConfigType<List<T>> {
+class ListConfigType<T>(private val type: ConfigType<T>) : ConfigType<List<T>> {
     override fun toElement(value: List<T>): JsonElement {
         val elem = JsonArray()
         // Making sure it executes in order
