@@ -6,11 +6,15 @@ import me.doclic.temflhos.config.ConfigNode
 import me.doclic.temflhos.event.Listener
 import me.doclic.temflhos.event.ListenerManager
 
-abstract class Module(val id: String, val name: String) : Listener {
-    open val disableOnDisconnect: Boolean
-        get() = false
+abstract class Module(
+    val id: String,
+    val name: String,
+
+    val resetOnDisconnect: Boolean = false,
+    val enabledByDefault: Boolean = false,
+) : Listener {
     val config = ConfigDir()
-    val enabled = ConfigNode("enabled", false, BooleanConfigType, config,
+    val enabled = ConfigNode("enabled", enabledByDefault, BooleanConfigType, config,
         onChange = { old, new ->
             run {
                 if (old == new) new

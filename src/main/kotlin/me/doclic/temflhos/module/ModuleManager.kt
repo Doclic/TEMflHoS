@@ -19,7 +19,7 @@ object ModuleManager : Listener {
     @SubscribeEvent
     fun onClientDisconnected(e: FMLNetworkEvent.ClientDisconnectionFromServerEvent) {
         for (module in writableRegistry.values)
-            if(module.disableOnDisconnect)
-                module.enabled.value = false
+            if(module.resetOnDisconnect)
+                module.enabled.value = module.enabledByDefault
     }
 }
