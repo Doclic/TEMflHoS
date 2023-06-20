@@ -24,6 +24,7 @@ class TEMflHoS {
 
         ModuleManager.register(PacketDisablerModule)
         ModuleManager.register(HudModule)
+        ModuleManager.register(MainMenuModule)
 
         ListenerManager.register(ModuleManager)
         ListenerManager.register(PacketEventHandler)
