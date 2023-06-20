@@ -6,8 +6,8 @@ import net.minecraft.network.play.INetHandlerPlayServer
 
 object PacketUtil {
     // todo s2c
-    fun queueC2SPacket(packet: C2SPacket) { mc().netHandler.addToSendQueue(packet) }
-    fun sendC2SPacket(packet: C2SPacket) { mc().netHandler.networkManager.sendPacket(packet) }
+    fun queueC2SPacket(packet: C2SPacket) { mc.netHandler.addToSendQueue(packet) }
+    fun sendC2SPacket(packet: C2SPacket) { mc.netHandler.networkManager.sendPacket(packet) }
 }
 
 typealias GenericPacket = Packet<*>

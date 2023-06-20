@@ -36,6 +36,6 @@ object PacketEventHandler : Listener {
     }
 
     override fun onPlayerQuit() {
-        mc().netHandler.networkManager.channel().pipeline().remove(TEMflHoS.MODID)
+        mc.netHandler.networkManager.channel().pipeline().remove(TEMflHoS.MODID)
     }
 }
