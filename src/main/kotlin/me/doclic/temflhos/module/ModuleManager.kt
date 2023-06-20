@@ -13,6 +13,7 @@ object ModuleManager : Listener {
     fun hasModule(module: Module): Boolean = hasModule(module.id)
     fun hasModule(id: String): Boolean = modules.containsKey(id)
     fun getModule(id: String): Module? = modules[id]
+    fun getActiveModules(): Map<String, Module> = modules.filter { module -> module.value.enabled }
     val moduleNames: Set<String>
         get() = modules.keys
 

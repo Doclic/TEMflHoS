@@ -3,6 +3,7 @@ package me.doclic.temflhos
 import me.doclic.temflhos.command.ModuleCommand
 import me.doclic.temflhos.event.ListenerManager
 import me.doclic.temflhos.event.handler.PacketEventHandler
+import me.doclic.temflhos.module.HudModule
 import me.doclic.temflhos.module.ModuleManager
 import me.doclic.temflhos.module.PacketDisablerModule
 import net.minecraftforge.client.ClientCommandHandler
@@ -23,7 +24,7 @@ class TEMflHoS {
         ClientCommandHandler.instance.registerCommand(ModuleCommand)
 
         ModuleManager.registerModule(PacketDisablerModule())
-
+        ModuleManager.registerModule(HudModule())
         ListenerManager.registerListener(ModuleManager)
         ListenerManager.registerListener(PacketEventHandler)
     }
