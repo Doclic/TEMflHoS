@@ -21,6 +21,7 @@ class TEMflHoS {
     @EventHandler
     fun onInit(e: FMLInitializationEvent) {
         ClientCommandHandler.instance.registerCommand(ModuleCommand)
+        ClientCommandHandler.instance.registerCommand(ConfigCommand)
 
         ModuleManager.register(PacketDisablerModule)
         ModuleManager.register(HudModule)
