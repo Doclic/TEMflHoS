@@ -65,21 +65,21 @@ object ModuleCommand : CommandBase() {
         }
 
         when (action) {
-            Action.TOGGLE -> { module!!; setState(module, !module.enabled) }
+            Action.TOGGLE -> { module!!; setState(module, !module.enabled.value) }
             Action.ENABLE -> { module!!; setState(module, true) }
             Action.DISABLE -> { module!!; setState(module, false) }
-            Action.STATE -> { module!!; tChat("Module ${module.name} is ${if(module.enabled) "enabled" else "disabled"}") }
+            Action.STATE -> { module!!; tChat("Module ${module.name} is ${if(module.enabled.value) "enabled" else "disabled"}") }
             Action.LIST -> tChat("Modules: ${ModuleManager.moduleNames}")
         }
     }
 
     private fun setState(module: Module, state: Boolean) {
-        if(module.enabled == state) {
+        if(module.enabled.value == state) {
             tChat("Module ${module.name} is already ${if (state) "enabled" else "disabled"}")
             return
         }
 
-        module.enabled = state
+        module.enabled.value = state
         tChat("${if (state) "Enabled" else "Disabled"} module ${module.name}")
     }
 }
