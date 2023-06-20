@@ -20,6 +20,6 @@ object ModuleManager : Listener {
     override fun onPlayerQuit() {
         for (module in modules.values)
             if(module.disableOnDisconnect)
-                module.enabled = false
+                module.enabled.value = false
     }
 }
