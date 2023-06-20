@@ -1,7 +1,8 @@
 package me.doclic.temflhos.module
 
 import me.doclic.temflhos.event.C2SPacketEvent
-import me.doclic.temflhos.util.*
+import me.doclic.temflhos.util.C2SPacket
+import me.doclic.temflhos.util.PacketUtil
 import org.lwjgl.input.Keyboard
 import java.util.LinkedList
 

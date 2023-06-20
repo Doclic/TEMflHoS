@@ -1,6 +1,10 @@
 package me.doclic.temflhos.module
 
-import me.doclic.temflhos.config.*
+import me.doclic.temflhos.config.BooleanConfigType
+import me.doclic.temflhos.config.ColorConfigType
+import me.doclic.temflhos.config.ConfigNode
+import me.doclic.temflhos.config.FloatConfigType
+import me.doclic.temflhos.config.IntConfigType
 import me.doclic.temflhos.util.mc
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent

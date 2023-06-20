@@ -2,7 +2,6 @@ package me.doclic.temflhos.config
 
 import com.google.gson.JsonObject
 
-
 class ConfigDir {
     val nodes: ArrayList<ConfigNode<*>> = ArrayList()
     val dirs: HashMap<String, ConfigDir> = HashMap()
