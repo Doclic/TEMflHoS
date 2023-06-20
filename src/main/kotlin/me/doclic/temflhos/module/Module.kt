@@ -3,8 +3,10 @@ package me.doclic.temflhos.module
 import me.doclic.temflhos.config.BooleanConfigType
 import me.doclic.temflhos.config.ConfigDir
 import me.doclic.temflhos.config.ConfigNode
+import me.doclic.temflhos.config.IntConfigType
 import me.doclic.temflhos.event.Listener
 import me.doclic.temflhos.event.ListenerManager
+import org.lwjgl.input.Keyboard
 
 abstract class Module(
     val id: String,
@@ -12,6 +14,7 @@ abstract class Module(
 
     val resetOnDisconnect: Boolean = false,
     val enabledByDefault: Boolean = false,
+    keyCode: Int = Keyboard.KEY_NONE,
 ) : Listener {
     val config = ConfigDir()
     val enabled = ConfigNode("enabled", enabledByDefault, BooleanConfigType, config,
@@ -28,6 +31,7 @@ abstract class Module(
                 new
             }
         })
+    val key = ConfigNode("key", keyCode, IntConfigType, config)
 
     open fun onEnable() { }
     open fun onDisable() { }

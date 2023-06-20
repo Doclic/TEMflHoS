@@ -3,9 +3,10 @@ package me.doclic.temflhos.module
 import me.doclic.temflhos.event.C2SPacketEvent
 import me.doclic.temflhos.util.*
 import net.minecraft.client.entity.EntityPlayerSP
+import org.lwjgl.input.Keyboard
 import java.util.LinkedList
 
-object PacketDisablerModule : Module("packet_disabler", "Packet Disabler", resetOnDisconnect = true) {
+object PacketDisablerModule : Module("packet_disabler", "Packet Disabler", keyCode = Keyboard.KEY_H, resetOnDisconnect = true) {
     private val queuedC2SPackets = LinkedList<C2SPacket>()
 
     override fun onEnable() {
