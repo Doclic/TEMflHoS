@@ -1,6 +1,8 @@
 package me.doclic.temflhos.module
 
 import me.doclic.temflhos.event.Listener
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.network.FMLNetworkEvent
 import java.util.Collections
 
 object ModuleManager : Listener {
@@ -17,7 +19,8 @@ object ModuleManager : Listener {
     fun hasModule(id: String): Boolean = writableModules.containsKey(id)
     fun getModule(id: String): Module? = writableModules[id]
 
-    override fun onPlayerQuit() {
+    @SubscribeEvent
+    fun onClientDisconnected(e: FMLNetworkEvent.ClientDisconnectionFromServerEvent) {
         for (module in writableModules.values)
             if(module.disableOnDisconnect)
                 module.enabled.value = false

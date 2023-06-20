@@ -10,33 +10,35 @@ import me.doclic.temflhos.event.ListenerManager
 import me.doclic.temflhos.event.S2CPacketEvent
 import me.doclic.temflhos.util.C2SPacket
 import me.doclic.temflhos.util.S2CPacket
-import me.doclic.temflhos.util.mc
-import net.minecraft.network.NetworkManager
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraftforge.fml.common.network.FMLNetworkEvent
 
 object PacketEventHandler : Listener {
+    @SubscribeEvent
     @Suppress("UNCHECKED_CAST")
-    override fun onPlayerJoin(net: NetworkManager) {
-        net.channel().pipeline().addBefore(
+    fun onClientConnected(e: FMLNetworkEvent.ClientConnectedToServerEvent) {
+        e.manager.channel().pipeline().addBefore(
             "packet_handler",
             TEMflHoS.MODID,
             object : ChannelDuplexHandler() {
                 override fun write(ctx: ChannelHandlerContext?, msg: Any?, promise: ChannelPromise?) {
-                    val e = C2SPacketEvent(msg as C2SPacket)
-                    ListenerManager.listeners.forEach { listener -> listener.onC2SPacket(e) }
+                    val packetEvent = C2SPacketEvent(msg as C2SPacket)
+                    ListenerManager.listeners.forEach { listener -> listener.onC2SPacket(packetEvent) }
 
-                    if(!e.cancelled) super.write(ctx, e.packet, promise)
+                    if(!packetEvent.cancelled) super.write(ctx, packetEvent.packet, promise)
                 }
 
                 override fun channelRead(ctx: ChannelHandlerContext?, msg: Any?) {
-                    val e = S2CPacketEvent(msg as S2CPacket)
-                    ListenerManager.listeners.forEach { listener -> listener.onS2CPacket(e) }
+                    val packetEvent = S2CPacketEvent(msg as S2CPacket)
+                    ListenerManager.listeners.forEach { listener -> listener.onS2CPacket(packetEvent) }
 
-                    if(!e.cancelled) super.channelRead(ctx, e.packet)
+                    if(!packetEvent.cancelled) super.channelRead(ctx, packetEvent.packet)
                 }
             })
     }
 
-    override fun onPlayerQuit() {
-        mc.netHandler.networkManager.channel().pipeline().remove(TEMflHoS.MODID)
+    @SubscribeEvent
+    fun onClientDisconnected(e: FMLNetworkEvent.ClientDisconnectionFromServerEvent) {
+        e.manager.channel().pipeline().remove(TEMflHoS.MODID)
     }
 }
