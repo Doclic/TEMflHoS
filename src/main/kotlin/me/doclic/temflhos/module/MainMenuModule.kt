@@ -9,7 +9,23 @@ import kotlin.random.Random
 
 object MainMenuModule : Module("main_menu", "Main Menu", enabledByDefault = true) {
     private val replaceSplashText = ConfigNode("replace_splash_text", true, BooleanConfigType, config)
-    private val splashText = ConfigNode("splash_texts", listOf("TEMflHoS!"), ListConfigType(StringConfigType), config)
+    private val splashText = ConfigNode("splash_texts", listOf(
+        "TEMflHoS!",
+        "The Epic Mod for like Hypixel or Sth",
+        "Essentials free!",
+        "... with a hack client",
+        "https://nicovideo.jp/watch/sm8628149",
+        "egg",
+        "this text is so unnecessarily long that it is barely readable even with a 4k monitor, you might even have to just read the source code, in which case, hello",
+        "1.8.9!",
+        "size 1 fish",
+        "in c, strlen(\"一 二 三\") == 11",
+        "approved by obama",
+        "after 9 years in development",
+        "missingno",
+        "global offensive",
+        "source"
+    ), ListConfigType(StringConfigType), config)
 
     override fun onSplashText(e: SplashTextEvent) {
         if(replaceSplashText.value) e.splashText = splashText.value[Random.nextInt(splashText.value.size)]
