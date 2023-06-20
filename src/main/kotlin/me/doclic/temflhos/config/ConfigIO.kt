@@ -10,7 +10,7 @@ import java.io.File
 import java.io.FileReader
 
 object ConfigIO {
-    val configFile = File(mc().mcDataDir, "config${File.separator}${TEMflHoS.MODID}.json")
+    val configFile = File(mc.mcDataDir, "config${File.separator}${TEMflHoS.MODID}.json")
     val rootDir: ConfigDir
     val modulesDir: ConfigDir
     init {

@@ -18,10 +18,10 @@ abstract class Module(val id: String, val name: String) : Listener {
                 if (new) {
                     onEnable()
                     ListenerManager.registerListener(this)
-                    eventBus.register(this)
+                    eventBus!!.register(this)
                 } else {
                     ListenerManager.removeListener(this)
-                    eventBus.unregister(this)
+                    eventBus!!.unregister(this)
                     onDisable()
                 }
                 new
