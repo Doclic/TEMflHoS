@@ -5,7 +5,7 @@ import me.doclic.temflhos.util.*
 import net.minecraft.client.entity.EntityPlayerSP
 import java.util.LinkedList
 
-class PacketDisablerModule : Module("packet_disabler", "Packet Disabler") {
+object PacketDisablerModule : Module("packet_disabler", "Packet Disabler") {
     override val disableOnDisconnect: Boolean = true
     private val queuedC2SPackets = LinkedList<C2SPacket>()
 

@@ -28,6 +28,6 @@ abstract class Module(val id: String, val name: String) : Listener {
             }
         })
 
-    abstract fun onEnable()
-    abstract fun onDisable()
+    open fun onEnable() { }
+    open fun onDisable() { }
 }

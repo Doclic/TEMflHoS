@@ -1,23 +1,33 @@
 package me.doclic.temflhos.module
 
-import me.doclic.temflhos.util.getRGBColor
+import me.doclic.temflhos.config.*
 import me.doclic.temflhos.util.mc
-import net.minecraft.client.Minecraft
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import java.awt.Color
 import kotlin.math.floor
-import kotlin.math.roundToInt
 
-class HudModule : Module("hud", "Hud") {
-    override fun onEnable()  {}
-    override fun onDisable() {}
-    private var time: Float = 0f;
-    private val resolution = 256
-    private val speed: Float = 25f
+object HudModule : Module("hud", "HUD") {
+    private val chromaColorCount = ConfigNode("chroma_color_count", 256, IntConfigType, config)
+    private val chromaSpeed = ConfigNode("chroma_speed", 1f, FloatConfigType, config)
+    private val chroma = ConfigNode("chroma", false, BooleanConfigType, config)
+    private val color = ConfigNode("color", Color(0xFF00FF), ColorConfigType, config)
+
     @SubscribeEvent
     fun render(event: RenderGameOverlayEvent.Post) {
-        drawMultiLineString(ModuleManager.getActiveModules().values.joinToString("\n") { module -> module.name }, 0, 0, getRGBColor(floor(time.toDouble()).roundToInt(), resolution))
-        time = (time + speed/Minecraft.getDebugFPS())%resolution
+        val activeModules = ModuleManager.modules.filter { entry -> entry.value.enabled.value }
+        val textColor: Int
+        if (chroma.value) {
+            // This converts the current time to a hue
+            // The mod 10000 is here because of float inaccuracy
+            var hue = (chromaSpeed.value * 0.1f * (System.currentTimeMillis() % 10000).toFloat()) / 1000f
+            // Limit the amount of colors used
+            hue %= 1f
+            hue = floor(hue * chromaColorCount.value.toFloat()) / chromaColorCount.value.toFloat()
+            textColor = Color.HSBtoRGB(hue, 0.7f, 1f)
+        } else textColor = color.value.rgb
+
+        drawMultiLineString(activeModules.keys.joinToString("\n"), 0, 0, textColor)
     }
 
 

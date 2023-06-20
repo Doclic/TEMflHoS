@@ -1,12 +1,10 @@
 package me.doclic.temflhos
 
-import me.doclic.temflhos.command.ModuleCommand
+import me.doclic.temflhos.command.*
 import me.doclic.temflhos.config.ConfigIO
 import me.doclic.temflhos.event.ListenerManager
 import me.doclic.temflhos.event.handler.PacketEventHandler
-import me.doclic.temflhos.module.HudModule
-import me.doclic.temflhos.module.ModuleManager
-import me.doclic.temflhos.module.PacketDisablerModule
+import me.doclic.temflhos.module.*
 import net.minecraftforge.client.ClientCommandHandler
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
@@ -24,8 +22,9 @@ class TEMflHoS {
     fun onInit(e: FMLInitializationEvent) {
         ClientCommandHandler.instance.registerCommand(ModuleCommand)
 
-        ModuleManager.registerModule(PacketDisablerModule())
-        ModuleManager.registerModule(HudModule())
+        ModuleManager.registerModule(PacketDisablerModule)
+        ModuleManager.registerModule(HudModule)
+
         ListenerManager.registerListener(ModuleManager)
         ListenerManager.registerListener(PacketEventHandler)
 

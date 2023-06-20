@@ -69,7 +69,7 @@ object ModuleCommand : CommandBase() {
             Action.ENABLE -> { module!!; setState(module, true) }
             Action.DISABLE -> { module!!; setState(module, false) }
             Action.STATE -> { module!!; tChat("Module ${module.name} is ${if(module.enabled.value) "enabled" else "disabled"}") }
-            Action.LIST -> tChat("Modules: ${ModuleManager.moduleNames}")
+            Action.LIST -> tChat("Modules: ${ModuleManager.modules.keys}")
         }
     }
 

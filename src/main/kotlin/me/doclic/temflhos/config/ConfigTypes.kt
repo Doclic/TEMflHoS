@@ -3,6 +3,7 @@ package me.doclic.temflhos.config
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
+import java.awt.Color
 
 interface ConfigType<T> {
     fun toElement(value: T): JsonElement
@@ -38,6 +39,20 @@ object FloatConfigType : ConfigType<Float> {
     override fun fromElement(elem: JsonElement): Float {
         if(elem !is JsonPrimitive || !elem.isNumber) throw TypeCastException("elem wasn't a Float")
         return elem.asFloat
+    }
+}
+
+object ColorConfigType : ConfigType<Color> {
+    override fun toElement(value: Color): JsonElement = JsonPrimitive("#%06x".format(value.rgb))
+    override fun fromElement(elem: JsonElement): Color {
+        // FIXME this code sucks
+        val str = StringConfigType.fromElement(elem)
+        if(!str.startsWith("#")) throw TypeCastException("elem wasn't a Color")
+        val num = str.substring(1).toInt(16)
+        val alpha = if(str.length > 7) num shr 24
+                    else               0xFF
+        val col = Color(num)
+        return Color(col.red, col.green, col.blue, alpha)
     }
 }
 

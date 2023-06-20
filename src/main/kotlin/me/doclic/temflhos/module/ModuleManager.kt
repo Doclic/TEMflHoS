@@ -1,24 +1,24 @@
 package me.doclic.temflhos.module
 
 import me.doclic.temflhos.event.Listener
+import java.util.Collections
 
 object ModuleManager : Listener {
-    private val modules = HashMap<String, Module>()
+    private val writableModules = HashMap<String, Module>()
 
+    val modules: Map<String, Module>
+        get() = Collections.unmodifiableMap(writableModules)
     fun registerModule(module: Module) {
         if(hasModule(module)) return
 
-        modules.put(module.id, module)
+        writableModules[module.id] = module
     }
     fun hasModule(module: Module): Boolean = hasModule(module.id)
-    fun hasModule(id: String): Boolean = modules.containsKey(id)
-    fun getModule(id: String): Module? = modules[id]
-    fun getActiveModules(): Map<String, Module> = modules.filter { module -> module.value.enabled.value }
-    val moduleNames: Set<String>
-        get() = modules.keys
+    fun hasModule(id: String): Boolean = writableModules.containsKey(id)
+    fun getModule(id: String): Module? = writableModules[id]
 
     override fun onPlayerQuit() {
-        for (module in modules.values)
+        for (module in writableModules.values)
             if(module.disableOnDisconnect)
                 module.enabled.value = false
     }

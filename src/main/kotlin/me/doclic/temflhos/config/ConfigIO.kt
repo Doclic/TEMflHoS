@@ -10,14 +10,14 @@ import java.io.File
 import java.io.FileReader
 
 object ConfigIO {
-    val configFile = File(mc.mcDataDir, "config${File.separator}${TEMflHoS.MODID}.json")
-    val rootDir: ConfigDir
-    val modulesDir: ConfigDir
+    private val configFile = File(mc.mcDataDir, "config${File.separator}${TEMflHoS.MODID}.json")
+    private val rootDir: ConfigDir
+    private val modulesDir: ConfigDir
     init {
         rootDir = ConfigDir()
         modulesDir = ConfigDir()
         rootDir.dirs["modules"] = modulesDir
-        for(moduleName in ModuleManager.moduleNames) modulesDir.dirs[moduleName] = ModuleManager.getModule(moduleName)!!.config
+        for(moduleName in ModuleManager.modules.keys) modulesDir.dirs[moduleName] = ModuleManager.getModule(moduleName)!!.config
     }
 
     fun writeConfig() {

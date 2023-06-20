@@ -1,12 +1,13 @@
 package me.doclic.temflhos.util
 
-import akka.event.EventBus
 import net.minecraft.client.Minecraft
 import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraftforge.common.MinecraftForge
+import net.minecraftforge.fml.common.eventhandler.EventBus
 
-val mc: Minecraft = Minecraft.getMinecraft()
+val mc: Minecraft
+    get() = Minecraft.getMinecraft()
 val localPlayer: EntityPlayerSP
     get() = mc.thePlayer
-val eventBus: net.minecraftforge.fml.common.eventhandler.EventBus?
+val eventBus: EventBus
     get() = MinecraftForge.EVENT_BUS
