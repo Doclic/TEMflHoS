@@ -22,11 +22,11 @@ class TEMflHoS {
     fun onInit(e: FMLInitializationEvent) {
         ClientCommandHandler.instance.registerCommand(ModuleCommand)
 
-        ModuleManager.registerModule(PacketDisablerModule)
-        ModuleManager.registerModule(HudModule)
+        ModuleManager.register(PacketDisablerModule)
+        ModuleManager.register(HudModule)
 
-        ListenerManager.registerListener(ModuleManager)
-        ListenerManager.registerListener(PacketEventHandler)
+        ListenerManager.register(ModuleManager)
+        ListenerManager.register(PacketEventHandler)
 
         ConfigIO.reloadConfig()
     }

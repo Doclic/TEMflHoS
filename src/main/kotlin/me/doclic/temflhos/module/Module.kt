@@ -16,9 +16,9 @@ abstract class Module(val id: String, val name: String) : Listener {
                 if (old == new) new
                 if (new) {
                     onEnable()
-                    ListenerManager.registerListener(this)
+                    ListenerManager.register(this)
                 } else {
-                    ListenerManager.removeListener(this)
+                    ListenerManager.unregister(this)
                     onDisable()
                 }
                 new

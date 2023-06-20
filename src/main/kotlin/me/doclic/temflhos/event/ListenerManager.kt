@@ -4,18 +4,17 @@ import me.doclic.temflhos.util.eventBus
 import java.util.Collections
 
 object ListenerManager {
-    private val writableListeners = HashSet<Listener>()
+    private val writableRegistry = HashSet<Listener>()
 
-    fun registerListener(listener: Listener) {
-        if(hasListener(listener)) return
+    fun register(listener: Listener) {
+        if(writableRegistry.contains(listener)) return
 
-        writableListeners.add(listener)
+        writableRegistry.add(listener)
         eventBus.register(listener)
     }
-    fun hasListener(listener: Listener): Boolean {return writableListeners.contains(listener) }
-    fun removeListener(listener: Listener) {
-        writableListeners.remove(listener)
+    fun unregister(listener: Listener) {
+        writableRegistry.remove(listener)
         eventBus.unregister(listener)
     }
-    val listeners: Set<Listener> get() = Collections.unmodifiableSet(writableListeners)
+    val registry: Set<Listener> get() = Collections.unmodifiableSet(writableRegistry)
 }

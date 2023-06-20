@@ -23,14 +23,14 @@ object PacketEventHandler : Listener {
             object : ChannelDuplexHandler() {
                 override fun write(ctx: ChannelHandlerContext?, msg: Any?, promise: ChannelPromise?) {
                     val packetEvent = C2SPacketEvent(msg as C2SPacket)
-                    ListenerManager.listeners.forEach { listener -> listener.onC2SPacket(packetEvent) }
+                    ListenerManager.registry.forEach { listener -> listener.onC2SPacket(packetEvent) }
 
                     if(!packetEvent.cancelled) super.write(ctx, packetEvent.packet, promise)
                 }
 
                 override fun channelRead(ctx: ChannelHandlerContext?, msg: Any?) {
                     val packetEvent = S2CPacketEvent(msg as S2CPacket)
-                    ListenerManager.listeners.forEach { listener -> listener.onS2CPacket(packetEvent) }
+                    ListenerManager.registry.forEach { listener -> listener.onS2CPacket(packetEvent) }
 
                     if(!packetEvent.cancelled) super.channelRead(ctx, packetEvent.packet)
                 }

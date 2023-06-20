@@ -46,12 +46,12 @@ object ModuleCommand : CommandBase() {
         val action: Action?
         val module: Module?
         if (args.size == 1) {
-            module = ModuleManager.getModule(args[0])
+            module = ModuleManager.registry[args[0]]
             action = if (module != null) Action.TOGGLE
                      else actions[args[0].lowercase()]
         } else {
             action = actions[args[0].lowercase()]
-            module = ModuleManager.getModule(args[1])
+            module = ModuleManager.registry[args[1]]
         }
 
         if(action == null) {
@@ -69,7 +69,7 @@ object ModuleCommand : CommandBase() {
             Action.ENABLE -> { module!!; setState(module, true) }
             Action.DISABLE -> { module!!; setState(module, false) }
             Action.STATE -> { module!!; tChat("Module ${module.name} is ${if(module.enabled.value) "enabled" else "disabled"}") }
-            Action.LIST -> tChat("Modules: ${ModuleManager.modules.keys}")
+            Action.LIST -> tChat("Modules: ${ModuleManager.registry.keys}")
         }
     }
 

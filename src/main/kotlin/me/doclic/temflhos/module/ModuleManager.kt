@@ -6,22 +6,19 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent
 import java.util.Collections
 
 object ModuleManager : Listener {
-    private val writableModules = HashMap<String, Module>()
+    private val writableRegistry = HashMap<String, Module>()
 
-    val modules: Map<String, Module>
-        get() = Collections.unmodifiableMap(writableModules)
-    fun registerModule(module: Module) {
-        if(hasModule(module)) return
+    fun register(module: Module) {
+        if(writableRegistry.containsValue(module)) return
 
-        writableModules[module.id] = module
+        writableRegistry[module.id] = module
     }
-    fun hasModule(module: Module): Boolean = hasModule(module.id)
-    fun hasModule(id: String): Boolean = writableModules.containsKey(id)
-    fun getModule(id: String): Module? = writableModules[id]
+    val registry: Map<String, Module>
+        get() = Collections.unmodifiableMap(writableRegistry)
 
     @SubscribeEvent
     fun onClientDisconnected(e: FMLNetworkEvent.ClientDisconnectionFromServerEvent) {
-        for (module in writableModules.values)
+        for (module in writableRegistry.values)
             if(module.disableOnDisconnect)
                 module.enabled.value = false
     }

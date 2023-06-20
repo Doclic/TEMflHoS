@@ -15,7 +15,7 @@ object HudModule : Module("hud", "HUD") {
 
     @SubscribeEvent
     fun render(event: RenderGameOverlayEvent.Post) {
-        val activeModules = ModuleManager.modules.filter { entry -> entry.value.enabled.value }
+        val activeModules = ModuleManager.registry.filter { entry -> entry.value.enabled.value }
         val textColor: Int
         if (chroma.value) {
             // This converts the current time to a hue

@@ -17,7 +17,7 @@ object ConfigIO {
         rootDir = ConfigDir()
         modulesDir = ConfigDir()
         rootDir.dirs["modules"] = modulesDir
-        for(moduleName in ModuleManager.modules.keys) modulesDir.dirs[moduleName] = ModuleManager.getModule(moduleName)!!.config
+        for(moduleName in ModuleManager.registry.keys) modulesDir.dirs[moduleName] = ModuleManager.registry[moduleName]!!.config
     }
 
     fun writeConfig() {
