@@ -11,11 +11,10 @@ import java.io.FileReader
 
 object ConfigIO {
     private val configFile = File(mc.mcDataDir, "config${File.separator}${TEMflHoS.MODID}.json")
-    private val rootDir: ConfigDir
-    private val modulesDir: ConfigDir
+    private val rootDir: ConfigDir = ConfigDir()
+    private val modulesDir: ConfigDir = ConfigDir()
+
     init {
-        rootDir = ConfigDir()
-        modulesDir = ConfigDir()
         rootDir.dirs["modules"] = modulesDir
         for(moduleName in ModuleManager.registry.keys) modulesDir.dirs[moduleName] = ModuleManager.registry[moduleName]!!.config
     }
