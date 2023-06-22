@@ -16,9 +16,13 @@ object HudModule : Module("hud", "HUD") {
     private val chromaSpeed = ConfigNode("chroma_speed", 1f, FloatConfigType, config)
     private val chroma = ConfigNode("chroma", false, BooleanConfigType, config)
     private val color = ConfigNode("color", Color(0xFF00FF), ColorConfigType, config)
+    private val moduleID = ConfigNode("module_id", false, BooleanConfigType, config)
+    private val paddingX = ConfigNode("padding_x", 2, IntConfigType, config)
+    private val paddingY = ConfigNode("padding_x", 2, IntConfigType, config)
+
 
     @SubscribeEvent
-    fun render(event: RenderGameOverlayEvent.Post) {
+    fun render(event: RenderGameOverlayEvent.Text) {
         val activeModules = ModuleManager.registry.filter { entry -> entry.value.enabled.value }
         val textColor: Int
         if (chroma.value) {
@@ -30,8 +34,8 @@ object HudModule : Module("hud", "HUD") {
             hue = floor(hue * chromaColorCount.value.toFloat()) / chromaColorCount.value.toFloat()
             textColor = Color.HSBtoRGB(hue, 0.7f, 1f)
         } else textColor = color.value.rgb
-
-        drawMultiLineString(activeModules.keys.joinToString("\n"), 0, 0, textColor)
+        if (moduleID.value) drawMultiLineString(activeModules.keys.joinToString("\n"), paddingX.value, paddingY.value, textColor)
+        else drawMultiLineString(activeModules.values.joinToString("\n") { module: Module -> module.name }, paddingX.value, paddingY.value, textColor)
     }
 
 
