@@ -19,6 +19,7 @@ object HudModule : Module("hud", "HUD") {
     private val moduleID = ConfigNode("module_id", false, BooleanConfigType, config)
     private val paddingX = ConfigNode("padding_x", 2, IntConfigType, config)
     private val paddingY = ConfigNode("padding_x", 2, IntConfigType, config)
+    private val dropShadow = ConfigNode ("drop_shadow", true, BooleanConfigType, config)
 
 
     @SubscribeEvent
@@ -34,15 +35,15 @@ object HudModule : Module("hud", "HUD") {
             hue = floor(hue * chromaColorCount.value.toFloat()) / chromaColorCount.value.toFloat()
             textColor = Color.HSBtoRGB(hue, 0.7f, 1f)
         } else textColor = color.value.rgb
-        if (moduleID.value) drawMultiLineString(activeModules.keys.joinToString("\n"), paddingX.value, paddingY.value, textColor)
-        else drawMultiLineString(activeModules.values.joinToString("\n") { module: Module -> module.name }, paddingX.value, paddingY.value, textColor)
+        if (moduleID.value) drawMultiLineString(activeModules.keys.joinToString("\n"), paddingX.value, paddingY.value, textColor, dropShadow.value)
+        else drawMultiLineString(activeModules.values.joinToString("\n") { module: Module -> module.name }, paddingX.value, paddingY.value, textColor, dropShadow.value)
     }
 
 
-    private fun drawMultiLineString (str: String, x: Int, y: Int, color: Int) {
-        var offset = y
+    private fun drawMultiLineString (str: String, x: Int, y: Int, color: Int, dropShadow: Boolean) {
+        var offset: Float = y.toFloat()
         for (string in str.split("\n")) {
-            mc.fontRendererObj.drawString(string, x, offset, color)
+            mc.fontRendererObj.drawString(string, x.toFloat(), offset, color, dropShadow)
             offset += mc.fontRendererObj.FONT_HEIGHT
         }
     }
