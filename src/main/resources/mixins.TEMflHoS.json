@@ -5,7 +5,10 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinGuiMainMenu",
-    "MixinKeyBinding"
+    "MixinKeyBinding",
+    "crashpatch.MixinBlockAnvil",
+    "crashpatch.MixinBlockNewLeaf",
+    "crashpatch.MixinBlockNewLog"
   ],
   "client": [
     "MixinGuiContainer"

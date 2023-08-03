@@ -28,6 +28,7 @@ class TEMflHoS {
         ModuleManager.register(MainMenuModule)
         ModuleManager.register(GhostItemModule)
         ModuleManager.register(SaveGUIModule)
+        ModuleManager.register(CrashPatchModule)
 
         ListenerManager.register(ModuleManager)
         ListenerManager.register(PacketEventHandler)
