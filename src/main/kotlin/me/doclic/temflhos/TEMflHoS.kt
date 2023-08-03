@@ -27,10 +27,10 @@ class TEMflHoS {
         ModuleManager.register(HudModule)
         ModuleManager.register(MainMenuModule)
         ModuleManager.register(GhostItemModule)
+        ModuleManager.register(SaveGUIModule)
 
         ListenerManager.register(ModuleManager)
         ListenerManager.register(PacketEventHandler)
-        ListenerManager.register(GhostItemModule)
 
         ConfigIO.reloadConfig()
     }

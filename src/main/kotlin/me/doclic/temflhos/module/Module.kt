@@ -22,7 +22,8 @@ abstract class Module(
     val enabled = ConfigNode("enabled", enabledByDefault, BooleanConfigType, config,
         onChange = { old, new ->
             run {
-                if (old == new) new
+                if (old == new) return@run new
+                if (checkCancelled(new)) return@run old
                 if (new) {
                     onEnable()
                     ListenerManager.register(this)
@@ -34,6 +35,7 @@ abstract class Module(
             }
         })
     val key = ConfigNode("key", keyCode, IntConfigType, config)
+    open fun checkCancelled(enabling: Boolean ): Boolean = false
 
     open fun onEnable() { }
     open fun onDisable() { }

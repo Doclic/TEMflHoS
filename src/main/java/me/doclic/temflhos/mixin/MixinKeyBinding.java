@@ -31,8 +31,9 @@ public abstract class MixinKeyBinding {
 
                 ModuleManager.INSTANCE.getRegistry().forEach((id, module) -> {
                     if(module.getKey().getValue() == Keyboard.getEventKey()) {
-                        module.getEnabled().setValue(!module.getEnabled().getValue());
-                        module.sendStateUpdateMsg();
+                        boolean old = module.getEnabled().getValue();
+                        module.getEnabled().setValue(!old);
+                        if (old != module.getEnabled().getValue()) module.sendStateUpdateMsg(); //If it wasnt cancelled
                     }
                 });
             }
