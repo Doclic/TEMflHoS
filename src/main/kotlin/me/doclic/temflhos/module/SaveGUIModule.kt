@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiScreen
 import net.minecraft.util.EnumChatFormatting
 import org.lwjgl.input.Keyboard
 
-object SaveGUIModule : Module("save_gui", "GUI Saved", keyCode = Keyboard.KEY_S, resetOnDisconnect = true) {
+object SaveGUIModule : Module("save_gui", "GUI Saved", keyCode = Keyboard.KEY_S, resetOnDisconnect = false) {
     private var savedGUI : GuiScreen? = null
     override fun checkCancelled(enabling: Boolean): Boolean {
         if (!enabling) return false
