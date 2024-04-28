@@ -24,7 +24,7 @@ import static me.doclic.temflhos.util.CommonFunctionsKt.tChat;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {
-    @Inject(method = "runTick", at = @At( sendClickBlockToController), cancellable = true)
+    @Inject(method = "sendClickBlockToController", at = @At("HEAD"), cancellable = true)
     private void a(boolean leftClick, CallbackInfo ci) {
         if (!ModuleManager.INSTANCE.getRegistry().get("safe_interact").getEnabled().getValue()) return;
         MovingObjectPosition target = getMc().objectMouseOver;
