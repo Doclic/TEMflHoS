@@ -8,7 +8,7 @@ import net.minecraft.command.ICommandSender
 object ConfigCommand : CommandBase() {
     override fun getCommandName(): String = "config"
     override fun canCommandSenderUseCommand(sender: ICommandSender?): Boolean = true
-    private val commandUsage: String = "/$commandName reload"
+    private val commandUsage: String = "$commandName reload"
     override fun getCommandUsage(sender: ICommandSender?): String = commandUsage
     override fun processCommand(sender: ICommandSender, args: Array<out String>) {
         if (args.isEmpty()) {
