@@ -7,7 +7,7 @@ import me.doclic.temflhos.config.StringConfigType
 import me.doclic.temflhos.event.SplashTextEvent
 import kotlin.random.Random
 
-object MainMenuModule : Module("main_menu", "Main Menu", enabledByDefault = true) {
+object MainMenuModule : Module("main_menu", "Main Menu") {
     private val replaceSplashText = ConfigNode("replace_splash_text", true, BooleanConfigType, config)
     private val splashText = ConfigNode("splash_texts", listOf(
         "TEMflHoS!",
