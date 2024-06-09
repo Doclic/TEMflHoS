@@ -43,7 +43,7 @@ object FloatConfigType : ConfigType<Float> {
 }
 
 object ColorConfigType : ConfigType<Color> {
-    override fun toElement(value: Color): JsonElement = JsonPrimitive("#%06x".format(value.rgb))
+    override fun toElement(value: Color): JsonElement = JsonPrimitive(String.format("#%06X", (value.rgb and 0x00FFFFFF))) //0-padded hex string discarding alpha
     override fun fromElement(elem: JsonElement): Color {
         // FIXME this code sucks
         val str = StringConfigType.fromElement(elem)

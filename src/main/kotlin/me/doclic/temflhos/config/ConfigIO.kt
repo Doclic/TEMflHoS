@@ -1,7 +1,8 @@
 package me.doclic.temflhos.config
 
+import com.google.common.io.Files
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
-import com.google.gson.JsonParseException
 import com.google.gson.JsonParser
 import me.doclic.temflhos.TEMflHoS
 import me.doclic.temflhos.module.ModuleManager
@@ -22,14 +23,25 @@ object ConfigIO {
     fun writeConfig() {
         if(!configFile.parentFile.exists()) configFile.parentFile.mkdirs()
         if(!configFile.exists()) configFile.createNewFile()
+        val obj = rootDir.read()
+        val json = GsonBuilder().setPrettyPrinting().create().toJson(obj)
+        @Suppress("UnstableApiUsage")
+        Files.write(json, configFile, Charsets.UTF_8)
     }
 
     fun reloadConfig() {
-        if(!configFile.exists()) return
+        if(!configFile.exists()) writeConfig()
+        var reader = FileReader(configFile)
+        var elem = JsonParser().parse(reader)
 
-        val reader = FileReader(configFile)
-        val elem = JsonParser().parse(reader)
-        if(elem !is JsonObject) throw JsonParseException("Root element wasn't a JsonObject")
+        if(elem !is JsonObject) {
+            @Suppress("UnstableApiUsage")
+            Files.move(configFile, File(mc.mcDataDir, "config${File.separator}${TEMflHoS.MODID}${System.currentTimeMillis()}.json.bak"))
+            writeConfig()
+            reader = FileReader(configFile)
+            elem = JsonParser().parse(reader)
+        }
+        if(elem !is JsonObject) throw RuntimeException("Malfunctioning writeConfig()")
 
         rootDir.update(elem)
 

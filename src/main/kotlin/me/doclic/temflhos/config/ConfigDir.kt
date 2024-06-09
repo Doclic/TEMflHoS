@@ -29,6 +29,20 @@ class ConfigDir {
             node.update(obj.get(node.name))
         } }
     }
+
+    fun read():JsonObject {
+        checkNamingCollisions()
+        val obj = JsonObject()
+        dirs.keys.forEach { key -> run {
+            println("reading into $key")
+            obj.add(key, dirs[key]?.read())
+        } }
+        nodes.forEach { node -> run {
+            println("reading into node ${node.name}")
+            obj.add(node.name, node.read())
+        } }
+        return obj
+    }
 }
 
 class NamingCollisionException(val name: String, msg: String = "Naming collision: $name") : RuntimeException(msg)

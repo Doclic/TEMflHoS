@@ -11,7 +11,7 @@ class ConfigNode<T>(
     val onChange: (old: T, new: T) -> T = { _, new -> new }
 ) {
     var value: T = defaultValue
-        set(value) { field = onChange(field, value) }
+        set(value) { field = onChange(field, value); ConfigIO.writeConfig() }
 
     init {
         dir.nodes += this
@@ -19,5 +19,9 @@ class ConfigNode<T>(
 
     fun update(elem: JsonElement) {
         value = type.fromElement(elem)
+    }
+
+    fun read():JsonElement {
+        return type.toElement(value)
     }
 }
