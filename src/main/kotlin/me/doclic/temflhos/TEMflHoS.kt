@@ -24,6 +24,7 @@ class TEMflHoS {
         ClientCommandHandler.instance.registerCommand(ConfigCommand)
 
         ModuleManager.register(PacketDisablerModule)
+        ModuleManager.register(PacketFirewallModule)
         ModuleManager.register(HudModule)
         ModuleManager.register(MainMenuModule)
         ModuleManager.register(GhostItemModule)
