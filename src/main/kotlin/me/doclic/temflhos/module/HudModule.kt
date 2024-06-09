@@ -18,7 +18,7 @@ object HudModule : Module("hud", "HUD") {
     private val color = ConfigNode("color", Color(0xFF00FF), ColorConfigType, config)
     private val moduleID = ConfigNode("module_id", false, BooleanConfigType, config)
     private val paddingX = ConfigNode("padding_x", 2, IntConfigType, config)
-    private val paddingY = ConfigNode("padding_x", 2, IntConfigType, config)
+    private val paddingY = ConfigNode("padding_y", 2, IntConfigType, config)
     private val dropShadow = ConfigNode ("drop_shadow", true, BooleanConfigType, config)
 
 
