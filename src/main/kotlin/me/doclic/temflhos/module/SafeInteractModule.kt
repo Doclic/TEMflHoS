@@ -1,12 +1,14 @@
 package me.doclic.temflhos.module
 
 import me.doclic.temflhos.event.C2SPacketEvent
+import me.doclic.temflhos.util.localPlayer
 import me.doclic.temflhos.util.mc
 import me.doclic.temflhos.util.tChat
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemBlock
+import net.minecraft.item.ItemStack
 import net.minecraft.network.play.client.C07PacketPlayerDigging
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement
 import net.minecraft.util.EnumChatFormatting
@@ -38,6 +40,7 @@ object SafeInteractModule : Module("safe_interact", "Safe Interact", keyCode = K
             if (itemStack.hasDisplayName() && itemStack.displayName.contains("null")) {
                 tChat("${EnumChatFormatting.GREEN}Safe interact prevented you from placing that block")
                 e.cancelled = true
+                refreshInventory((e.packet as C08PacketPlayerBlockPlacement).stack)
             }
             return
         }
@@ -46,7 +49,12 @@ object SafeInteractModule : Module("safe_interact", "Safe Interact", keyCode = K
             if (block == Blocks.stone_slab && damage < 8) return
             tChat("${EnumChatFormatting.GREEN}Safe interact prevented you from placing that block")
             e.cancelled = true
+            refreshInventory((e.packet as C08PacketPlayerBlockPlacement).stack)
         }
+    }
+
+    private fun refreshInventory(item: ItemStack){
+        localPlayer.inventory.setInventorySlotContents(localPlayer.inventory.currentItem, item)
     }
 
 
