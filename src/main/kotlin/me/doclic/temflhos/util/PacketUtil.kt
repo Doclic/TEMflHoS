@@ -6,6 +6,9 @@ import net.minecraft.network.play.INetHandlerPlayServer
 
 object PacketUtil {
     // todo s2c
+    fun sendS2CPacket(packet: S2CPacket) {
+        packet.processPacket(mc.netHandler.networkManager.netHandler as INetHandlerPlayClient?)
+    }
     fun queueC2SPacket(packet: C2SPacket) { mc.netHandler.addToSendQueue(packet) }
     fun sendC2SPacket(packet: C2SPacket) { mc.netHandler.networkManager.sendPacket(packet) }
 }
