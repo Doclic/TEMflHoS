@@ -31,14 +31,14 @@ object PacketDisablerModule : Module("packet_disabler", "Packet Disabler", keyCo
     }
 
     override fun onC2SPacket(e: C2SPacketEvent) {
-        val inList = c2sPacketFilterList.value.any {p -> e.packet.javaClass.name.lowercase().contains(p.lowercase())}
+        val inList = c2sPacketFilterList.value.any {p -> e.packet.javaClass.simpleName.lowercase().contains(p.lowercase())}
         if ((inList and c2sBlacklistMode.value) or (!inList and !c2sBlacklistMode.value)) return
         e.cancelled = true
         queuedC2SPackets.add(e.packet)
     }
 
     override fun onS2CPacket(e: S2CPacketEvent) {
-        val inList = s2cPacketFilterList.value.any {p -> e.packet.javaClass.name.lowercase().contains(p.lowercase())}
+        val inList = s2cPacketFilterList.value.any {p -> e.packet.javaClass.simpleName.lowercase().contains(p.lowercase())}
         if ((inList and s2cBlacklistMode.value) or (!inList and !s2cBlacklistMode.value)) return
         e.cancelled = true
         queuedS2CPackets.add(e.packet)
