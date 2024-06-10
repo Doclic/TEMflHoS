@@ -5,7 +5,6 @@ import net.minecraft.network.play.INetHandlerPlayClient
 import net.minecraft.network.play.INetHandlerPlayServer
 
 object PacketUtil {
-    // todo s2c
     fun sendS2CPacket(packet: S2CPacket) {
         packet.processPacket(mc.netHandler.networkManager.netHandler as INetHandlerPlayClient?)
     }
