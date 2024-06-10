@@ -1,5 +1,7 @@
 package me.doclic.temflhos.module
 
+import me.doclic.temflhos.config.BooleanConfigType
+import me.doclic.temflhos.config.ConfigNode
 import me.doclic.temflhos.util.*
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.util.EnumChatFormatting
@@ -7,6 +9,7 @@ import org.lwjgl.input.Keyboard
 
 object SaveGUIModule : Module("save_gui", "GUI Saved", keyCode = Keyboard.KEY_S, resetOnDisconnect = false) {
     private var savedGUI : GuiScreen? = null
+    private val closeOnEnable = ConfigNode("close_on_enable", true, BooleanConfigType, config)
     override fun checkCancelled(enabling: Boolean): Boolean {
         if (!enabling) return false
         if (mc.currentScreen != null) return false
@@ -16,7 +19,7 @@ object SaveGUIModule : Module("save_gui", "GUI Saved", keyCode = Keyboard.KEY_S,
 
     override fun onEnable() {
         savedGUI = mc.currentScreen
-        mc.displayGuiScreen(null) //maybe make this a config option
+        if (closeOnEnable.value) mc.displayGuiScreen(null)
     }
 
     override fun onDisable() {
