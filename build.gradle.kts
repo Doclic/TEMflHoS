@@ -5,6 +5,7 @@ plugins {
     id("dev.architectury.architectury-pack200") version "0.1.3"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     kotlin("jvm") version "1.8.21"
+    id("maven-publish")
 }
 
 //Constants:
@@ -18,6 +19,7 @@ val modid = rootProject.name
 // Toolchains:
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+    withSourcesJar()
 }
 
 // Minecraft configuration:
@@ -131,4 +133,14 @@ tasks.shadowJar {
 }
 
 tasks.assemble.get().dependsOn(tasks.remapJar)
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            groupId = "me.doclic"
+            artifactId = "temflhos"
+            version = "1.0.0"
 
+            from(components["java"])
+        }
+    }
+}
